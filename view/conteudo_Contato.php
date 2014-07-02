@@ -1,5 +1,5 @@
-<?php 
-if($_POST['nome']!="")
+<?php
+if (array_key_exists('nome',$_POST))
 { ?>
 	<p>Dados enviados com sucesso, abaixo seguem os dados que você enviou</p>
 	<p>
