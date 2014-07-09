@@ -44,7 +44,7 @@
 <?php echo $titulo; ?>
 					</h1>
 					<hr />
-<?php require ("view/conteudo_".$menu.".php"); ?>						
+<?php require ("view/conteudo_".$menuArquivo.".php"); ?>
 					<hr />
 				</div>
 			</div>
