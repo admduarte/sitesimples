@@ -1,26 +1,43 @@
 <?php
 
 $opcoesMenu = array(
-    "home"=> ["Home","Bem vindo!!!"],
-    "empresa"=> ["Empresa","Quem somos"],
-    "produtos"=> ["Produtos","Nossos produtos"],
-    "servicos"=> ["Servicos","Nossos serviços"],
-    "contato"=> ["Contato","Fale conosco"]
+    "home"=> ["Home",1],
+    "empresa"=> ["Empresa",2],
+    "produtos"=> ["Produtos",3],
+    "servicos"=> ["Servicos",4],
+    "contato"=> ["Contato",5]
 );
 
 $rota = parse_url("http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
 $menu = ValidaPath($rota['path'],$opcoesMenu);
 
+try {
+    $conexao = new PDO("mysql:host=localhost;dbname=sitesimples","root","root");
+}
+catch(\PDOException $e) {
+    die("Ocorreu um erro de conexão: ".$e->getCode().": ".$e->getMessage());
+}
+
+
 if ($menu!="404")
 {
-    $menuArquivo = $opcoesMenu[$menu][0];
-    $titulo = $opcoesMenu[$menu][1];
+    if ($menu=="") $menu="home";
+
+    $query = $conexao->prepare("SELECT * FROM conteudo WHERE id=:id");
+    $query->bindValue("id",$opcoesMenu[$menu][1]);
+    $query->execute();
+
+    $conteudo = $query->fetch(PDO::FETCH_ASSOC);
+
+    $titulo = $conteudo['titulo'];
+    $codigoHtml = $conteudo['codigoHtml'];
+
 }
 else
 {
     $titulo = "Referência inválida";
-    $menuArquivo = "404";
+    $codigoHtml = "";
 }
 
 $insMenu = "";
@@ -37,7 +54,7 @@ function ValidaPath($path,$opcoes)
     $destino = "404";
     $path = str_replace("/","",$path);
 
-    if (array_key_exists($path,$opcoes))
+    if (array_key_exists($path,$opcoes) || ($path==""))
     {
         $destino = $path;
     }
