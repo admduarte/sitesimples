@@ -19,7 +19,7 @@ if ($rota['path']=='/busca')
     $menu = "busca";
     $titulo = 'Busca por "'.$_GET['texto'].'"';
 
-    $query = $conexao->prepare('SELECT * FROM conteudo WHERE titulo like :texto OR codigoHtml like :texto');
+    $query = $conexao->prepare('SELECT path, titulo FROM conteudo WHERE titulo like :texto OR codigoHtml like :texto');
     $query->bindValue("texto","%".$_GET['texto']."%",PDO::PARAM_STR);
     $query->execute();
 
@@ -28,7 +28,7 @@ if ($rota['path']=='/busca')
     $codigoHtml = "";
     foreach($conteudos as $conteudo)
     {
-        $codigoHtml .= "<a href='/'>". $conteudo['titulo']."</a><br>";
+        $codigoHtml .= "<a href='/".$conteudo['path']."'>". $conteudo['titulo']."</a><br>";
     }
     $codigoHtml .= "";
 
