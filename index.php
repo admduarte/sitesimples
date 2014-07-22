@@ -2,24 +2,15 @@
 
 require "sql/config.php";
 
-$query = $conexao->prepare('SELECT id, path, titulo FROM conteudo ORDER BY id');
+$query = $conexao->prepare('SELECT id, menu, path, titulo FROM conteudo ORDER BY id');
 $query->execute();
-$opcoesMenu = array();
-
 $conteudos = $query->fetchAll(PDO::FETCH_ASSOC);
+
+$opcoesMenu = array();
 foreach($conteudos as $conteudo)
 {
     $opcoesMenu[$conteudo['path']] = array($conteudo['menu'],$conteudo['id']);
 }
-
-
-$opcoesMenu = array(
-    "home"=> ["Home",1],
-    "empresa"=> ["Empresa",2],
-    "produtos"=> ["Produtos",3],
-    "servicos"=> ["Servicos",4],
-    "contato"=> ["Contato",5]
-);
 
 $rota = parse_url("http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 

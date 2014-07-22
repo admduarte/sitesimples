@@ -8,8 +8,6 @@ CREATE TABLE `conteudo` (
   PRIMARY KEY(id)
 );
 
-TRUNCATE `conteudo`;
-
 INSERT INTO `conteudo` (`id`,`menu`,`path`,`titulo`,`codigoHtml`) VALUES
 (1,'Home','home','Bem vindo!!!','<p>Este é um site simples de demonstração.</p><p>Texto descritivo da página Home ...</p>'),
 (2,'Empresa','empresa','Quem somos','<p>Texto sobre a empresa, falando sobre sua história, seus objetivos e sua missão.</p>'),
