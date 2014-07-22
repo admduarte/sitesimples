@@ -1,5 +1,8 @@
-CREATE TABLE IF NOT EXISTS `conteudo` (
+DROP TABLE IF EXISTS `conteudo`;
+CREATE TABLE `conteudo` (
   `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `menu` VARCHAR(50) NULL,
+  `path` VARCHAR(50) NULL,
   `titulo` VARCHAR(50) NULL,
   `codigoHtml` TEXT NULL,
   PRIMARY KEY(id)
@@ -7,21 +10,21 @@ CREATE TABLE IF NOT EXISTS `conteudo` (
 
 TRUNCATE `conteudo`;
 
-INSERT INTO `conteudo` (`id`,`titulo`,`codigoHtml`) VALUES
-(1,'Bem vindo!!!','<p>Este é um site simples de demonstração.</p><p>Texto descritivo da página Home ...</p>'),
-(2,'Quem somos','<p>Texto sobre a empresa, falando sobre sua história, seus objetivos e sua missão.</p>'),
-(3,'Nossos produtos','<p>Histórico e descritivo de produtos.</p>'),
-(4,'Nossos serviços','<p>Histórico e descritivo de serviços.</p>'),
-(5,'Fale conosco','
+INSERT INTO `conteudo` (`id`,`menu`,`path`,`titulo`,`codigoHtml`) VALUES
+(1,'Home','home','Bem vindo!!!','<p>Este é um site simples de demonstração.</p><p>Texto descritivo da página Home ...</p>'),
+(2,'Empresa','empresa','Quem somos','<p>Texto sobre a empresa, falando sobre sua história, seus objetivos e sua missão.</p>'),
+(3,'Produtos','produtos','Nossos produtos','<p>Histórico e descritivo de produtos.</p>'),
+(4,'Serviços','servicos','Nossos serviços','<p>Histórico e descritivo de serviços.</p>'),
+(5,'Contato','contato','Fale conosco','
 <?php
-if (array_key_exists(\'nome\',$_POST))
+if (array_key_exists("nome",$_POST))
 { ?>
 	<p>Dados enviados com sucesso, abaixo seguem os dados que você enviou</p>
 	<p>
-	  <b>Nome:</b> <?php echo $_POST[\'nome\']; ?><br>
-	  <b>E-mail:</b> <?php echo $_POST[\'email\']; ?><br>
-	  <b>Assunto:</b> <?php echo $_POST[\'assunto\']; ?><br>
-	  <b>Mensagem:</b> <?php echo $_POST[\'mensagem\']; ?><br>
+	  <b>Nome:</b> <?php echo $_POST["nome"]; ?><br>
+	  <b>E-mail:</b> <?php echo $_POST["email"]; ?><br>
+	  <b>Assunto:</b> <?php echo $_POST["assunto"]; ?><br>
+	  <b>Mensagem:</b> <?php echo $_POST["mensagem"]; ?><br>
 	</p>
 
 <?php }

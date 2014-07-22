@@ -55,7 +55,11 @@
 <?php echo $titulo; ?>
 					</h1>
 					<hr />
-<?php echo $codigoHtml; ?>
+<?php
+file_put_contents("temp.inc",$codigoHtml);
+require "temp.inc";
+unlink("temp.inc");
+?>
 					<hr />
 				</div>
 			</div>

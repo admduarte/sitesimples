@@ -2,6 +2,17 @@
 
 require "sql/config.php";
 
+$query = $conexao->prepare('SELECT id, path, titulo FROM conteudo ORDER BY id');
+$query->execute();
+$opcoesMenu = array();
+
+$conteudos = $query->fetchAll(PDO::FETCH_ASSOC);
+foreach($conteudos as $conteudo)
+{
+    $opcoesMenu[$conteudo['path']] = array($conteudo['menu'],$conteudo['id']);
+}
+
+
 $opcoesMenu = array(
     "home"=> ["Home",1],
     "empresa"=> ["Empresa",2],
@@ -12,26 +23,49 @@ $opcoesMenu = array(
 
 $rota = parse_url("http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
-$menu = ValidaPath($rota['path'],$opcoesMenu);
-
-if ($menu!="404")
+if ($rota['path']=='/busca')
 {
-    if ($menu=="") $menu="home";
+    $menu = "busca";
+    $titulo = 'Busca por "'.$_GET['texto'].'"';
 
-    $query = $conexao->prepare("SELECT * FROM conteudo WHERE id=:id");
-    $query->bindValue("id",$opcoesMenu[$menu][1]);
+    $query = $conexao->prepare('SELECT * FROM conteudo WHERE titulo like :texto OR codigoHtml like :texto');
+    $query->bindValue("texto","%".$_GET['texto']."%",PDO::PARAM_STR);
     $query->execute();
 
-    $conteudo = $query->fetch(PDO::FETCH_ASSOC);
+    $conteudos = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    $titulo = $conteudo['titulo'];
-    $codigoHtml = $conteudo['codigoHtml'];
+    $codigoHtml = "";
+    foreach($conteudos as $conteudo)
+    {
+        $codigoHtml .= "<a href='/'>". $conteudo['titulo']."</a><br>";
+    }
+    $codigoHtml .= "";
+
 
 }
 else
 {
-    $titulo = "Referência inválida";
-    $codigoHtml = "";
+    $menu = ValidaPath($rota['path'],$opcoesMenu);
+
+    if ($menu!="404")
+    {
+        if ($menu=="") $menu="home";
+
+        $query = $conexao->prepare("SELECT * FROM conteudo WHERE id=:id");
+        $query->bindValue("id",$opcoesMenu[$menu][1]);
+        $query->execute();
+
+        $conteudo = $query->fetch(PDO::FETCH_ASSOC);
+
+        $titulo = $conteudo['titulo'];
+        $codigoHtml = $conteudo['codigoHtml'];
+
+    }
+    else
+    {
+        $titulo = "Referência inválida";
+        $codigoHtml = "";
+    }
 }
 
 $insMenu = "";
