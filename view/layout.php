@@ -56,9 +56,14 @@
 					</h1>
 					<hr />
 <?php
-file_put_contents("temp.inc",$codigoHtml);
-require "temp.inc";
-unlink("temp.inc");
+
+$arquivo_temp = tempnam(".","tmp");
+$handle = fopen($arquivo_temp,"w");
+fwrite($handle,$codigoHtml);
+fclose($handle);
+require $arquivo_temp;
+unlink($arquivo_temp);
+
 ?>
 					<hr />
 				</div>
